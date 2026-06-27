@@ -1,0 +1,49 @@
+{
+  "name": "bukhtech-pi-marketplace",
+  "version": "1.0.0",
+  "description": "Production-ready Pi Network Marketplace dApp with Pi SDK integration",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\"",
+    "dev:frontend": "react-scripts start",
+    "dev:api": "node api/server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start": "serve -s build",
+    "vercel-build": "npm run build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.0",
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.1",
+    "crypto": "^1.0.3"
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1",
+    "concurrently": "^8.2.0",
+    "serve": "^14.1.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
