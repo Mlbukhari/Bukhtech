@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "env": {
+    "REACT_APP_PI_API_KEY": "@pi_api_key",
+    "REACT_APP_PI_WALLET_ADDRESS": "@pi_wallet_address",
+    "REACT_APP_PI_APP_ID": "@pi_app_id",
+    "REACT_APP_PI_ENVIRONMENT": "testnet",
+    "JWT_SECRET": "@jwt_secret"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "methods": ["GET", "POST", "PUT", "DELETE"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

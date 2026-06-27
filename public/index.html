@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#31a24c" />
+    <meta name="description" content="Bukhtech - Production-ready Pi Network Marketplace dApp" />
+    <title>Bukhtech | Pi Network Marketplace</title>
+    <!-- Pi SDK -->
+    <script>
+      window.Pi = {
+        authenticate: async function() {
+          // Mock implementation for development
+          return {
+            accessToken: 'test_token_' + Date.now(),
+            user: {
+              uid: 'user_' + Math.random().toString(36).substr(2, 9),
+              username: 'testuser',
+              email: 'test@example.com'
+            }
+          };
+        },
+        payments: {
+          initiate: function(payment, callbacks) {
+            console.log('Payment initiated:', payment);
+            // Mock flow
+            setTimeout(() => callbacks.onReadyForServerApproval('PAY_' + Date.now()), 1000);
+            setTimeout(() => {
+              const txid = 'TXN_' + Math.random().toString(36).substr(2, 9);
+              callbacks.onReadyForServerCompletion('PAY_' + Date.now(), txid);
+            }, 3000);
+          }
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
