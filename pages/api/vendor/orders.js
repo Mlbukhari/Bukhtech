@@ -3,7 +3,7 @@ import { requireVendor } from "../../../lib/auth";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
-  const vendor = requireVendor(req, res);
+  const vendor = await requireVendor(req, res);
   if (!vendor) return;
 
   const { limit = 50, skip = 0 } = req.query;

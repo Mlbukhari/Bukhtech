@@ -9,9 +9,13 @@ export default async function handler(req, res) {
   try {
     const { db } = await connectToDatabase(process.env.MONGODB_URI);
     const users = db.collection("users");
-    await users.updateOne({ piUid: user.piUid }, { $set: { role: "vendor", updatedAt: new Date() } }, { upsert: true });
+    const vendorRequests = db.collection("vendor_requests");
 
-    res.status(200).json({ ok: true, message: "Vendor role granted (self-service). In production use admin approval." });
+    const existingRequest = await vendorRequests.findOne({ piUid: user.piUid });
+    if (existingRequest) return res.status(400).json({ error: "request already pending" });
+
+    await vendorRequests.insertOne({ piUid: user.piUid, status: "pending", createdAt: new Date() });
+    return res.status(200).json({ ok: true, message: "Vendor request submitted" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "failed" });

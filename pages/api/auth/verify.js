@@ -1,6 +1,7 @@
 import { verifyPiAccessToken } from '../../../lib/pi-server';
 import { connectToDatabase } from '../../../lib/mongodb';
 import { signToken } from '../../../lib/jwt';
+import { setLoginCookie } from '../../../lib/session';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -22,7 +23,10 @@ export default async function handler(req, res) {
 
     const token = signToken({ piUid: userDoc.piUid, role: 'user' });
 
-    res.status(200).json({ token, user: { piUid: userDoc.piUid, piClaims: piUser } });
+    // Set httpOnly cookie instead of returning token
+    setLoginCookie(res, token);
+
+    res.status(200).json({ user: { piUid: userDoc.piUid, piClaims: piUser } });
   } catch (err) {
     console.error('auth verify failed', err?.response?.data || err?.message || err);
     res.status(401).json({ error: 'Failed to verify Pi accessToken' });

@@ -1,14 +1,12 @@
 import { connectToDatabase } from "../../../lib/mongodb";
-import { verifyToken } from "../../../lib/jwt";
+import { requireAuth } from "../../../lib/auth";
 import { approvePaymentOnPi } from "../../../lib/pi-server";
 import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(" ")[1];
-  const user = verifyToken(token);
-  if (!user) return res.status(401).json({ error: "Unauthorized" });
+  const user = requireAuth(req, res);
+  if (!user) return;
 
   const { orderId, paymentId } = req.body;
   if (!orderId || !paymentId) return res.status(400).json({ error: "orderId and paymentId required" });

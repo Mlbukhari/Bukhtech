@@ -15,9 +15,7 @@ export default function SignInButton({ onSignedIn }) {
         if (!accessToken) throw new Error("Pi SDK returned no accessToken");
 
         const verifyResp = await axios.post("/api/auth/verify", { accessToken });
-        const token = verifyResp.data?.token;
-        if (token) {
-          localStorage.setItem("bukhtech_token", token);
+        if (verifyResp.data?.user) {
           onSignedIn && onSignedIn(verifyResp.data.user);
           return;
         } else {
@@ -30,8 +28,7 @@ export default function SignInButton({ onSignedIn }) {
       const username = prompt("Pi SDK not detected. Enter a demo username:");
       const demoPayload = { payload: { piAddress: username, challenge: challenge.challenge }, signedMessage: "demo", publicKey: "demo" };
       const r = await axios.post("/api/auth/verify", { signedPayload: demoPayload });
-      if (r.data?.token) {
-        localStorage.setItem("bukhtech_token", r.data.token);
+      if (r.data?.user) {
         onSignedIn && onSignedIn(r.data.user);
       }
     } catch (err) {
